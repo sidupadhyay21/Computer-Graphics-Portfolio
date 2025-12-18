@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Graphics Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 50px;
+        }
+        
+        .project-section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .project-section h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .project-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        canvas {
+            border: 3px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+            cursor: pointer;
+        }
+        
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        input[type="text"] {
+            width: 50px;
+            padding: 5px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        #div1 {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .value-display {
+            font-weight: 600;
+            color: #667eea;
+            min-width: 45px;
+        }
+        
+        /* Hide ALL RunCanvas UI elements that appear after canvas */
+        #canvas1-br, #canvas1-br2, #canvas1-slider, #canvas1-text, #canvas1-run {
+            display: none !important;
+            position: absolute !important;
+            left: -9999px !important;
+        }
+        
+        /* Container for the train UI that will be moved */
+        #train-controls-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #train-controls-container #canvas1-slider {
+            display: inline-block !important;
+            position: static !important;
+            left: auto !important;
+            width: 300px !important;
+        }
+        
+        #train-controls-container #canvas1-text {
+            display: inline-block !important;
+            position: static !important;
+            left: auto !important;
+            width: 50px !important;
+        }
+        
+        #train-controls-container #canvas1-run {
+            display: inline-block !important;
+            position: static !important;
+            left: auto !important;
+            width: 20px !important;
+        }
+        
+        /* Hide World UI elements we don't want */
+        #world-controls-container label:has(input[id*="chkSolo"]),
+        #world-controls-container input[id*="chkSolo"],
+        #world-controls-container select[id*="LookAt"] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Computer Graphics Portfolio</h1>
+        <p class="subtitle">Interactive Visualizations & 3D Graphics</p>
+        
+        <!-- Project 1: Train Track -->
+        <div class="project-section">
+            <h2>Project 1: Train Track with Cardinal Splines</h2>
+            <p class="project-description">
+                An interactive train simulation using Cardinal splines for smooth track curves. 
+                Features include arc-length parameterization for constant-speed movement, 
+                parallel rails, rail ties, and draggable control points to customize the track layout. Shift click to add points.
+            </p>
+            
+            <div class="canvas-container">
+                <canvas id="canvas1" width="600" height="600"></canvas>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="tension">Cardinal Spline Tension:</label>
+                    <input type="range" id="tension" min="0" max="1" step="0.01" value="1">
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" id="check-simple-track">
+                    <label for="check-simple-track">Simple Track</label>
+                </div>
+                <div class="control-group">
+                    <input type="checkbox" id="check-arc-length" checked>
+                    <label for="check-arc-length">Arc-Length Parameterization</label>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div id="train-controls-container">
+                    <!-- The RunCanvas will insert its controls here via JavaScript -->
+                </div>
+                <div class="control-group">
+                    <button onclick="screenshot('canvas1')">📸 Screenshot</button>
+                    <button onclick="record('canvas1','time')">🎥 Record</button>
+                    <input id="time" type="text" size="2" value="10"> seconds
+                </div>
+            </div>
+        </div>
+
+        <!-- Project 2: 3D Scene -->
+        <div class="project-section">
+            <h2>Project 2: 3D Scene with Three.js</h2>
+            <p class="project-description">
+                A complex 3D scene built with Three.js featuring custom objects, environment mapping, 
+                shadows, and interactive lighting. Includes various animated objects and a realistic 
+                lighting system with adjustable sunlight intensity.
+            </p>
+            
+            <div class="canvas-container">
+                <div id="div1"></div>
+            </div>
+            
+            <div id="world-controls-container"></div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="intensityRange">☀️ Sunlight Intensity:</label>
+                    <input type="range" id="intensityRange" min="0" max="2" step="0.01" value="1">
+                    <span id="intensityValue" class="value-display">1.00</span>
+                </div>
+                <div class="control-group">
+                    <button onclick="screenshot('canvas')">📸 Screenshot</button>
+                    <button onclick="record('canvas','time2')">🎥 Record</button>
+                    <input id="time2" type="text" size="2" value="10"> seconds
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 1 Script -->
+    <script src="./P1-sidupadhyay21/for_students/tr-01-01.js" type="module" defer></script>
+    
+    <!-- Project 2 Import Map and Script -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./P2-sidupadhyay21/libs/CS559-Three/build/three.module.js"
+        }
+    }
+    </script>
+    <script src="./P2-sidupadhyay21/for_students/gr-01-01.js" type="module"></script>
+    
+    <!-- Screenshot and Record Functions -->
+    <script type="module">
+        import { screenshot, record } from "./P1-sidupadhyay21/libs/CS559/saveCanvas.js";
+        window.screenshot = screenshot;
+        window.record = record;
+        
+        // Move the RunCanvas controls into the proper container
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const slider = document.getElementById('canvas1-slider');
+                const textInput = document.getElementById('canvas1-text');
+                const runButton = document.getElementById('canvas1-run');
+                const container = document.getElementById('train-controls-container');
+                
+                if (slider && textInput && runButton && container) {
+                    // Check the animate button by default and trigger animation
+                    runButton.checked = true;
+                    runButton.dispatchEvent(new Event('change'));
+                    
+                    // Create wrapper divs for each control
+                    const runGroup = document.createElement('div');
+                    runGroup.className = 'control-group';
+                    runGroup.appendChild(runButton);
+                    const runLabel = document.createElement('label');
+                    runLabel.textContent = 'Animate';
+                    runGroup.appendChild(runLabel);
+                    
+                    const sliderGroup = document.createElement('div');
+                    sliderGroup.className = 'control-group';
+                    const sliderLabel = document.createElement('label');
+                    sliderLabel.textContent = 'Position: ';
+                    sliderGroup.appendChild(sliderLabel);
+                    sliderGroup.appendChild(slider);
+                    sliderGroup.appendChild(textInput);
+                    
+                    container.appendChild(runGroup);
+                    container.appendChild(sliderGroup);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

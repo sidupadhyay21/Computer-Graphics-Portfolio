@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../libs/CS559/style559.css" />
+  </head>
+  <body>
+    <canvas id="canvas1" height="600" width="600"></canvas>
+    <script src="tr-01-01.js" type="module" defer></script>
+    <!-- tension slider -->
+    <script type="module">
+      import { screenshot, record } from "../libs/CS559/saveCanvas.js";
+      window.screenshot = screenshot;
+      window.record = record;
+    </script>
+    <br><label for="tension">Cardinal Spline Tension</label>
+    <input type="range" id="tension" min="0" max="1" step="0.01" value="1" />
+    <!-- The screenshot and record buttons -->
+    <button onclick="screenshot('canvas1')">Screenshot</button> <button
+    onclick="record('canvas1','time')">Record</button> <input id="time" type="text" size="2" value="10"> seconds.
+    <br><br>
+  </body>
+</html>
+
